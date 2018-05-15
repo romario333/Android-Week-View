@@ -1,11 +1,11 @@
-package com.alamkanak.weekview;
+package com.alamkanak.weekview
 
-import java.util.Calendar;
+import java.util.Calendar
 
 /**
  * Created by jesse on 6/02/2016.
  */
-public class WeekViewUtil {
+object WeekViewUtil {
 
 
     /////////////////////////////////////////////////////////////////
@@ -21,8 +21,8 @@ public class WeekViewUtil {
      * @param dateTwo The second date.     *
      * @return Whether the dates are on the same day.
      */
-    public static boolean isSameDay(Calendar dateOne, Calendar dateTwo) {
-        return dateOne.get(Calendar.YEAR) == dateTwo.get(Calendar.YEAR) && dateOne.get(Calendar.DAY_OF_YEAR) == dateTwo.get(Calendar.DAY_OF_YEAR);
+    fun isSameDay(dateOne: Calendar, dateTwo: Calendar): Boolean {
+        return dateOne.get(Calendar.YEAR) == dateTwo.get(Calendar.YEAR) && dateOne.get(Calendar.DAY_OF_YEAR) == dateTwo.get(Calendar.DAY_OF_YEAR)
     }
 
     /**
@@ -30,13 +30,13 @@ public class WeekViewUtil {
      *
      * @return the calendar instance
      */
-    public static Calendar today() {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        today.set(Calendar.MINUTE, 0);
-        today.set(Calendar.SECOND, 0);
-        today.set(Calendar.MILLISECOND, 0);
-        return today;
+    fun today(): Calendar {
+        val today = Calendar.getInstance()
+        today.set(Calendar.HOUR_OF_DAY, 0)
+        today.set(Calendar.MINUTE, 0)
+        today.set(Calendar.SECOND, 0)
+        today.set(Calendar.MILLISECOND, 0)
+        return today
     }
 
     /**
@@ -46,12 +46,11 @@ public class WeekViewUtil {
      * @param dateTwo The second day.
      * @return Whether the dates are on the same day and hour.
      */
-    public static boolean isSameDayAndHour(Calendar dateOne, Calendar dateTwo) {
+    fun isSameDayAndHour(dateOne: Calendar, dateTwo: Calendar?): Boolean {
 
-        if (dateTwo != null) {
-            return isSameDay(dateOne, dateTwo) && dateOne.get(Calendar.HOUR_OF_DAY) == dateTwo.get(Calendar.HOUR_OF_DAY);
-        }
-        return false;
+        return if (dateTwo != null) {
+            isSameDay(dateOne, dateTwo) && dateOne.get(Calendar.HOUR_OF_DAY) == dateTwo.get(Calendar.HOUR_OF_DAY)
+        } else false
     }
 
     /**
@@ -61,9 +60,8 @@ public class WeekViewUtil {
      * @param dateTwo the second date
      * @return the amount of days between dateTwo and dateOne
      */
-    public static int daysBetween(Calendar dateOne, Calendar dateTwo) {
-        return (int) (((dateTwo.getTimeInMillis() + dateTwo.getTimeZone().getOffset(dateTwo.getTimeInMillis())) / (1000 * 60 * 60 * 24)) -
-                ((dateOne.getTimeInMillis() + dateOne.getTimeZone().getOffset(dateOne.getTimeInMillis())) / (1000 * 60 * 60 * 24)));
+    fun daysBetween(dateOne: Calendar, dateTwo: Calendar): Int {
+        return ((dateTwo.timeInMillis + dateTwo.timeZone.getOffset(dateTwo.timeInMillis)) / (1000 * 60 * 60 * 24) - (dateOne.timeInMillis + dateOne.timeZone.getOffset(dateOne.timeInMillis)) / (1000 * 60 * 60 * 24)).toInt()
     }
 
     /*
@@ -71,8 +69,8 @@ public class WeekViewUtil {
     * @param date
     * @return amount of minutes in day before time
     */
-    public static int getPassedMinutesInDay(Calendar date) {
-        return getPassedMinutesInDay(date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE));
+    fun getPassedMinutesInDay(date: Calendar): Int {
+        return getPassedMinutesInDay(date.get(Calendar.HOUR_OF_DAY), date.get(Calendar.MINUTE))
     }
 
     /**
@@ -82,7 +80,7 @@ public class WeekViewUtil {
      * @param minute
      * @return amount of minutes in the given hours and minutes
      */
-    public static int getPassedMinutesInDay(int hour, int minute) {
-        return hour * 60 + minute;
+    fun getPassedMinutesInDay(hour: Int, minute: Int): Int {
+        return hour * 60 + minute
     }
 }
