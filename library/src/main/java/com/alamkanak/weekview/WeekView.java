@@ -282,7 +282,16 @@ public class WeekView extends View {
             switch (mCurrentFlingDirection) {
                 case LEFT:
                 case RIGHT:
-                    mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, (int) (velocityX * mXScrollingSpeed), 0, (int) getXMinLimit(), (int) getXMaxLimit(), (int) getYMinLimit(), (int) getYMaxLimit());
+
+                    int visibleDays = getRealNumberOfVisibleDays();
+                    float minX = mCurrentOrigin.x - visibleDays * (mWidthPerDay + mColumnGap);
+                    float maxX = mCurrentOrigin.x + visibleDays * (mWidthPerDay + mColumnGap);
+
+                    minX = Math.max(minX, getXMinLimit());
+                    maxX = Math.min(maxX, getXMaxLimit());
+
+                    mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, (int) (velocityX), 0, (int) minX, (int) maxX, (int) getYMinLimit(), (int) getYMaxLimit());
+
                     break;
                 case VERTICAL:
                     mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, 0, (int) velocityY, (int) getXMinLimit(), (int) getXMaxLimit(), (int) getYMinLimit(), (int) getYMaxLimit());
