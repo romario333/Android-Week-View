@@ -278,11 +278,23 @@ public class WeekView extends View {
 
             mScroller.forceFinished(true);
 
+
             mCurrentFlingDirection = mCurrentScrollDirection;
+            int visibleDays = getRealNumberOfVisibleDays();
             switch (mCurrentFlingDirection) {
                 case LEFT:
+                    double minX = mCurrentOrigin.x - visibleDays * (mWidthPerDay + mColumnGap);
+                    // snap to day
+                    minX = Math.ceil(minX / (mWidthPerDay + mColumnGap)) * (mWidthPerDay + mColumnGap);
+                    minX = Math.max(minX, getXMinLimit());
+                    mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, (int) (velocityX), 0, (int) minX, (int) getXMaxLimit(), (int) getYMinLimit(), (int) getYMaxLimit());
+                    break;
                 case RIGHT:
-                    mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, (int) (velocityX * mXScrollingSpeed), 0, (int) getXMinLimit(), (int) getXMaxLimit(), (int) getYMinLimit(), (int) getYMaxLimit());
+                    double maxX = mCurrentOrigin.x + visibleDays * (mWidthPerDay + mColumnGap);
+                    // snap to day
+                    maxX = Math.floor(maxX / (mWidthPerDay + mColumnGap)) * (mWidthPerDay + mColumnGap);
+                    maxX = Math.min(maxX, getXMaxLimit());
+                    mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, (int) (velocityX), 0, (int) getXMinLimit(), (int) maxX, (int) getYMinLimit(), (int) getYMaxLimit());
                     break;
                 case VERTICAL:
                     mScroller.fling((int) mCurrentOrigin.x, (int) mCurrentOrigin.y, 0, (int) velocityY, (int) getXMinLimit(), (int) getXMaxLimit(), (int) getYMinLimit(), (int) getYMaxLimit());
@@ -2516,6 +2528,8 @@ public class WeekView extends View {
     public int getMinOverlappingMinutes() {
         return this.mMinOverlappingMinutes;
     }
+
+    public boolean isZooming() { return mIsZooming; }
 
     /////////////////////////////////////////////////////////////////
     //
